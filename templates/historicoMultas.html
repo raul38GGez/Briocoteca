@@ -86,7 +86,7 @@
                 <img id="logoImage" alt="Logo">
             </a>
         </div>
-
+    
         <!-- Barra de Pesquisa -->
         <form id="formBuscaLivro">
             <div class="search-container">
@@ -94,7 +94,17 @@
                 <input type="text" id="campoBusca" placeholder="Pesquise Seu Livro" class="search-box">
             </div>
         </form>
-
+    
+        <div class="catalogo">
+            <a class="btn-catalogo" href="catalogo.html">
+                <svg class="edit-svgIcon" viewBox="0 0 512 512">
+                    <path
+                        d="M88.7 223.8L0 375.8 0 96C0 60.7 28.7 32 64 32l117.5 0c17 0 33.3 6.7 45.3 18.7l26.5 26.5c12 12 28.3 18.7 45.3 18.7L416 96c35.3 0 64 28.7 64 64l0 32-336 0c-22.8 0-43.8 12.1-55.3 31.8zm27.6 16.1C122.1 230 132.6 224 144 224l400 0c11.5 0 22 6.1 27.7 16.1s5.7 22.2-.1 32.1l-112 192C453.9 474 443.4 480 432 480L32 480c-11.5 0-22-6.1-27.7-16.1s-5.7-22.2 .1-32.1l112-192z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    
         <div class="coisa">
             <!-- Ícone de Menu com Dropdown -->
             <div class="header-end">
@@ -104,14 +114,14 @@
                         <div class="menulinha"></div>
                         <div class="menulinha"></div>
                     </div>
-
+    
                     <ul class="dropdown-menu" id="dropdownMenu">
-
+    
                     </ul>
-
+    
                 </div>
             </div>
-
+    
     </header>
     <!-- FIM DO CABEÇALHO -->
 
@@ -214,13 +224,37 @@
 
     <!-- JavaScript principal (logo abaixo do body) -->
     <script>
+        // Exibe o nome do usuário do localStorage
+        document.addEventListener('DOMContentLoaded', function () {
+            var nome = localStorage.getItem("nome");
+            if (nome) {
+                document.getElementById("nomeUsuario").innerHTML = ", " + nome;
+            }
+        });
+
+        // Busca de livro no header (igual home)
+        $("#formBuscaLivro").on("submit", function (e) {
+            e.preventDefault();
+            let termo = $("#campoBusca").val().trim();
+            if (!termo) {
+                Swal.fire({
+                    title: "Atenção!",
+                    text: "Digite algo para buscar.",
+                    icon: "warning"
+                });
+                return;
+            }
+            window.location.href = "catalogo.html?q=" + encodeURIComponent(termo);
+        });
+
+        // Função para carregar multas do usuário
         $(document).ready(function () {
             const token = localStorage.getItem("token");
             const id_usuario = localStorage.getItem("id_usuario");
 
             function carregaMultasHistorico() {
                 var settings = {
-                    url: ipPython + "/multasusuario/" + id_usuario,
+                    url: (typeof ipPython !== "undefined" ? ipPython : "") + "/multasusuario/" + id_usuario,
                     method: "GET",
                     timeout: 0,
                     headers: {
@@ -230,7 +264,6 @@
                         const html = document.getElementById("listaMultaHistorico");
                         html.innerHTML = "";
 
-                        // Se não veio nenhuma multa, mostra a mensagem de "sem multas"
                         if (!retorno.multas || retorno.multas.length === 0) {
                             document.getElementById("multas-0").style.display = "block";
                             return;
@@ -238,57 +271,57 @@
                             document.getElementById("multas-0").style.display = "none";
                         }
 
-                        // Para cada multa, construímos um card e incluímos o botão "Pagar Multa"
                         retorno.multas.forEach((multa) => {
-                            /*
-                              Cada "multa" tem:
-                              - multa.id_multa
-                              - multa.usuario.nome
-                              - multa.usuario.email
-                              - multa.data_lancamento
-                              - multa.configuracao.valorfixo
-                              - multa.configuracao.acrescimo
-                              - multa.configuracao.ano
-                              - multa.valor
-                            */
                             html.innerHTML += `
-                                <div class="item">
-                                  <div class="multa-tabela">
-                                    <div class="fiote1">
-                                      <span class="negrito">Nome do Usuário:</span>
-                                      <p>${multa.usuario.nome}</p>
-                                      <span class="negrito">Email do Usuário:</span>
-                                      <p>${multa.usuario.email}</p>
-                                      <span class="negrito">Data da Multa:</span>
-                                      <p>${multa.data_lancamento}</p>
-                                    </div>
-                                    <div class="fiote2">
-                                      <span class="negrito">Valor Fixo:</span>
-                                      <p>${multa.configuracao.valorfixo}</p>
-                                      <span class="negrito">Valor a ser pago:</span>
-                                      <p>${multa.valor}</p>
-                                      <span class="negrito">Acréscimo:</span>
-                                      <p>${multa.configuracao.acrescimo}</p>
-                                      <span class="negrito">Ano da Multa:</span>
-                                      <p>${multa.configuracao.ano}</p>
-                                    </div>
-                                  </div>
-
-                                  <!-- Botão para gerar e exibir o QR code PIX desta multa -->
-                                  <div class="text-center mt-2">
-                                    <button
-                                      class="btn btn-success btn-pagar-multa"
-                                      data-id="${multa.id_multa}">
-                                      Pagar Multa
-                                    </button>
-                                  </div>
-                                </div>
-                                <hr>
-                            `;
+                                        <div class="multa-container">
+                                            <div class="multa-header">
+                                                <div class="multa-title">Multa #${multa.id_multa}</div>
+                                                <div class="multa-status status-pendente">PENDENTE</div>
+                                            </div>
+                                            
+                                            <div class="multa-body">
+                                                <div>
+                                                    <div class="multa-info">
+                                                        <span class="multa-label">Usuário</span>
+                                                        <span class="multa-value">${multa.usuario.nome}</span>
+                                                    </div>
+                                                    <div class="multa-info">
+                                                        <span class="multa-label">Email</span>
+                                                        <span class="multa-value">${multa.usuario.email}</span>
+                                                    </div>
+                                                    <div class="multa-info">
+                                                        <span class="multa-label">Data da Multa</span>
+                                                        <span class="multa-value">${new Date(multa.data_lancamento).toLocaleDateString('pt-BR')}</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div>
+                                                    <div class="multa-info">
+                                                        <span class="multa-label">Valor Fixo</span>
+                                                        <span class="multa-value">R$ ${parseFloat(multa.configuracao.valorfixo).toFixed(2)}</span>
+                                                    </div>
+                                                    <div class="multa-info">
+                                                        <span class="multa-label">Acréscimo</span>
+                                                        <span class="multa-value">R$ ${parseFloat(multa.configuracao.acrescimo).toFixed(2)}</span>
+                                                    </div>
+                                                    <div class="multa-info">
+                                                        <span class="multa-label">Ano da Multa</span>
+                                                        <span class="multa-value">${multa.configuracao.ano}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="multa-valor">
+                                                Total: R$ ${parseFloat(multa.valor).toFixed(2)}
+                                            </div>
+                                            
+                                            <button class="btn btn-success btn-pagar-multa" data-id="${multa.id_multa}">
+                                                <i class="fa-brands fa-pix"></i> Pagar com PIX
+                                            </button>
+                                        </div>
+                                    `;
                         });
 
-                        // Agora que inserimos todos os botões na página, vamos
-                        // adicionar o listener de clique em cada ".btn-pagar-multa"
                         document.querySelectorAll('.btn-pagar-multa').forEach(button => {
                             button.addEventListener('click', function () {
                                 const idMulta = this.getAttribute('data-id');
@@ -300,7 +333,6 @@
                         if (xhr.status === 404) {
                             document.getElementById("multas-0").style.display = "block";
                         } else {
-                            // Qualquer outro erro, exibe um alerta
                             Swal.fire("Erro!", "Não foi possível carregar suas multas.", "error");
                         }
                     }
@@ -310,14 +342,13 @@
 
             carregaMultasHistorico();
 
-            // Essa função faz o fetch para /gerar_pix e exibe a imagem do QR code
+            // Função para gerar e exibir o QR code PIX
             function gerarEExibirQrCode(idMulta) {
-                // Prepara o corpo da requisição
                 const dadosEnviar = {
                     id_multa: parseInt(idMulta)
                 };
 
-                fetch(`${ipPython}/gerar_pix`, {
+                fetch((typeof ipPython !== "undefined" ? ipPython : "") + "/gerar_pix", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -325,57 +356,33 @@
                     },
                     body: JSON.stringify(dadosEnviar)
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        // Se der 4xx ou 5xx, tenta extrair JSON de erro
-                        return response.json().then(err => {
-                            throw new Error(err.erro || "Erro ao gerar QR code");
-                        });
-                    }
-                    // A resposta é um PNG -> converte para blob
-                    return response.blob();
-                })
-                .then(blob => {
-                    // Cria uma URL para o blob e exibe na tag <img>
-                    const urlBlob = URL.createObjectURL(blob);
-                    document.getElementById('qrcodeImage').src = urlBlob;
-                    document.getElementById('qrcodeContainer').style.display = 'block';
-                })
-                .catch(error => {
-                    // Exibe mensagem de erro se algo der errado
-                    Swal.fire("Erro!", error.message, "error");
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                throw new Error(err.erro || "Erro ao gerar QR code");
+                            });
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const urlBlob = URL.createObjectURL(blob);
+                        document.getElementById('qrcodeImage').src = urlBlob;
+                        document.getElementById('qrcodeContainer').style.display = 'block';
+                    })
+                    .catch(error => {
+                        Swal.fire("Erro!", error.message, "error");
+                    });
             }
 
             // Botão "Fechar" do container de QR code
-            document.getElementById('closeQr').addEventListener('click', function() {
-                // Limpa o src da imagem e esconde o container
+            document.getElementById('closeQr').addEventListener('click', function () {
                 const img = document.getElementById('qrcodeImage');
                 if (img.src) {
-                    // Revoga a URL do blob para liberar memória
                     URL.revokeObjectURL(img.src);
                     img.src = '';
                 }
                 document.getElementById('qrcodeContainer').style.display = 'none';
             });
-
-            // ... seu código de menus e links de relatórios permanece igual ...
-            function atualizarLinksRelatorios() {
-                const linksRelatorios = {
-                    relatorioMultas: "/multas_relatorio",
-                    relatorioLivros: "/livros_relatorio",
-                    relatorioUsuarios: "/usuarios_relatorio",
-                    relatorioEmprestimos: "/emprestimos_relatorio"
-                };
-                for (let id in linksRelatorios) {
-                    const elemento = document.getElementById(id);
-                    if (elemento) {
-                        elemento.href = `${ipPython2}${linksRelatorios[id]}`;
-                    }
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', atualizarLinksRelatorios);
 
             // Atualiza logo
             function atualizarLogoSite() {
@@ -389,7 +396,7 @@
                         if (logoImage2) logoImage2.src = '../static/img/head-removebg-preview.png';
                         return;
                     }
-                    let url = `${ipPython}/static/uploads/logo/logo.${logoExts[i]}?${Date.now()}`;
+                    let url = (typeof ipPython !== "undefined" ? ipPython : "") + `/static/uploads/logo/logo.${logoExts[i]}?${Date.now()}`;
                     fetch(url).then(resp => {
                         if (resp.ok) {
                             let logoImage = document.getElementById("logoImage");
@@ -406,12 +413,40 @@
             }
             document.addEventListener('DOMContentLoaded', atualizarLogoSite);
         });
-
         const logoImage = document.getElementById("logoImage");
-        const logoImage2 = document.getElementById("logoImage2");
+        logoImage.src = `${ipPython}/static/uploads/logo/logo.png`;
 
-        logoImage.src  = `${ipPython}/static/uploads/logo/logo.png`;
+        const logoImage2 = document.getElementById("logoImage2");
         logoImage2.src = `${ipPython}/static/uploads/logo/logo.png`;
+
+        const logoExts = ['png', 'jpg', 'jpeg', 'webp'];
+        function atualizarLogoSite() {
+            let i = 0;
+            function tentarProxima() {
+                if (i >= logoExts.length) {
+                    let logoImage = document.getElementById("logoImage");
+                    let logoImage2 = document.getElementById("logoImage2");
+                    if (logoImage) logoImage.src = '../static/img/head-removebg-preview.png';
+                    if (logoImage2) logoImage2.src = '../static/img/head-removebg-preview.png';
+                    return;
+                }
+                let url = `${ipPython}/static/uploads/logo/logo.${logoExts[i]}?${Date.now()}`;
+                fetch(url).then(resp => {
+                    if (resp.ok) {
+                        let logoImage = document.getElementById("logoImage");
+                        let logoImage2 = document.getElementById("logoImage2");
+                        if (logoImage) logoImage.src = url;
+                        if (logoImage2) logoImage2.src = url;
+                    } else {
+                        i++;
+                        tentarProxima();
+                    }
+                });
+            }
+            tentarProxima();
+        }
+        document.addEventListener('DOMContentLoaded', atualizarLogoSite);
+
     </script>
 </body>
 
