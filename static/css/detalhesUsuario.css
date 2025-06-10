@@ -630,7 +630,9 @@ h1 {
 }
 
 .mb-3 {
+    margin-top: -80px;
     display: flex;
+    gap: 10px;
     justify-content: center;
 }
 
@@ -1012,6 +1014,7 @@ form {
 }
 
 .table-responsive th {
+    width: 1px;
     padding: 15px;
     background-color: var(--azul);
     color: var(--branco);
@@ -1295,6 +1298,11 @@ p {
 
     .catalogo p {
         display: none;
+    }
+
+    .filho2 {
+        width: 19rem;
+        margin: 0px;
     }
 }
 
