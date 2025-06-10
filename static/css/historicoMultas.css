@@ -62,6 +62,10 @@ select {
     padding-left: -1px;
 }
 
+.texto-preto {
+    font-size: x-large;
+}
+
 .fa-user {
     padding-right: 2px;
     padding-left: 1px;
@@ -849,10 +853,6 @@ button.botao-multas {
     background-color: var(--azul-escuro);
     transform: scale(1.05);
     transition: background-color 0.3s, transform 0.3s;
-}
-
-.algo-legal {
-    display: block;
 }
 
 .butao {
