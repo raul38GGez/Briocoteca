@@ -375,7 +375,7 @@ header {
 
 .listalivros {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(5,1fr);
     gap: 20px;
     margin-bottom: 30px;
 }
@@ -974,7 +974,7 @@ footer {
 /* Grid de livros */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 25px;
     padding: 20px 0;
 }
@@ -1091,7 +1091,7 @@ footer {
 
 .info-section .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 30px;
 }
 

@@ -236,9 +236,10 @@ header {
 
 .listalivros {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 24px 18px;
+        margin: 40px auto 30px auto;
+        justify-content: center;
 }
 
 .item {
@@ -1024,7 +1025,7 @@ footer {
 
 @media (max-width: 768px) {
     .listalivros {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(2 , 1fr);
     }
 
 }
