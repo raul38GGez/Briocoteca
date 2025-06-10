@@ -632,7 +632,6 @@ h1 {
 .mb-3 {
     display: flex;
     justify-content: center;
-    flex-direction: column;
 }
 
 .modal-footer {
