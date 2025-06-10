@@ -116,7 +116,7 @@
                 <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
                     type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Avalie</button>
             </li>
-            <div id="sumir-quando-nao-for-adm">
+            <div>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
                         type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Histórico</button>
@@ -182,6 +182,12 @@
                     } catch (e) {
                         console.error("Erro ao decodificar o token:", e);
                     }
+                }
+
+                const cargo = (localStorage.getItem("cargo") || "").trim().toUpperCase();
+
+                if (cargo !== "ADM" && cargo !== "BIBLIOTECARIO") {
+                    document.getElementById("pills-contact-tab").style.display = "none";
                 }
 
                 const stars = document.querySelectorAll(".star");
@@ -399,12 +405,6 @@
                 function carregarHistorico() {
                     const tbody = document.querySelector("#tabela-historico tbody");
                     tbody.innerHTML = "";
-
-                    const cargo = localStorage.getItem("cargo")
-
-                    if (cargo === "ADM" || cargo != "Bibliotecario") {
-                        document.getElementById("sumir-quando-nao-for-adm").style.display = "none";
-                    }
 
                     fetch(`${ipPython}/historico?id_livro=${id_livro}`, {
                         method: 'GET',
