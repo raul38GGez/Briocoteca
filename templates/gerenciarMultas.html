@@ -21,7 +21,6 @@
     crossorigin="anonymous"></script>
 
   <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -42,7 +41,7 @@
         <img id="logoImage" alt="Logo">
       </a>
     </div>
-  
+
     <!-- Barra de Pesquisa -->
     <form id="formBuscaLivro">
       <div class="search-container">
@@ -50,7 +49,7 @@
         <input type="text" id="campoBusca" placeholder="Pesquise Seu Livro" class="search-box">
       </div>
     </form>
-  
+
     <div class="catalogo">
       <a class="btn-catalogo" href="catalogo.html">
         <svg class="edit-svgIcon" viewBox="0 0 512 512">
@@ -60,7 +59,7 @@
         </svg>
       </a>
     </div>
-  
+
     <div class="coisa">
       <!-- Ícone de Menu com Dropdown -->
       <div class="header-end">
@@ -70,14 +69,14 @@
             <div class="menulinha"></div>
             <div class="menulinha"></div>
           </div>
-  
+
           <ul class="dropdown-menu" id="dropdownMenu">
-  
+
           </ul>
-  
+
         </div>
       </div>
-  
+
   </header>
   <!-- FIM DO CABEÇALHO -->
 
@@ -195,6 +194,10 @@
 
       carregarMultas();
 
+      function formatarReal(valor) {
+        return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+
       function carregarMultas() {
         $.ajax({
           method: "GET",
@@ -208,18 +211,22 @@
             let linha = ""
 
             multas.forEach(multa => {
-              linha += `
-                    <tr>
-                        <td>${multa.valorfixo}</td>
-                        <td>${multa.acrescimo}</td>
-                        <td>${(multa.ano)}</td>
-                        <td>
-                            <a href="editMulta.html?id=${multa.id_config}&valorfixo=${multa.valorfixo}&acrescimo=${multa.acrescimo}&ano=${multa.ano}"><button class="acoes" >Editar</button></a>
-                        </td>
-                    </tr>
-                `;
+              const valorFormatado = formatarReal(multa.valorfixo);
+              const acrescimoFormatado = formatarReal(multa.acrescimo);
 
-              tabela.html(linha)
+              linha += `
+                <tr>
+                  <td>${valorFormatado}</td>
+                  <td>${acrescimoFormatado}</td>
+                  <td>${(multa.ano)}</td>
+                  <td>
+                    <a href="editMulta.html?id=${multa.id_config}&valorfixo=${multa.valorfixo}&acrescimo=${multa.acrescimo}&ano=${multa.ano}">
+                      <button class="acoes">Editar</button>
+                    </a>
+                  </td>
+                </tr>
+              `;
+              tabela.html(linha);
             });
 
           },
@@ -240,11 +247,12 @@
     // Adiciona o evento de clique no botão de relatórios
     document.addEventListener('DOMContentLoaded', function () {
       const relatoriosItem = document.getElementById('relatorios');
-      const submenu = relatoriosItem.querySelector('.submenu');
-
-      relatoriosItem.querySelector('.submenu-toggle').addEventListener('click', function () {
-        submenu.classList.toggle('show'); // Alterna a classe 'show' para mostrar ou esconder o submenu
-      });
+      if (relatoriosItem) {
+        const submenu = relatoriosItem.querySelector('.submenu');
+        relatoriosItem.querySelector('.submenu-toggle').addEventListener('click', function () {
+          submenu.classList.toggle('show'); // Alterna a classe 'show' para mostrar ou esconder o submenu
+        });
+      }
     });
     // Função para atualizar os hrefs dos relatórios
     function atualizarLinksRelatorios() {
