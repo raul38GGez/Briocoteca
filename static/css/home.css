@@ -15,6 +15,7 @@
     --cor-complementar: rgb(96, 209, 231);
     --escuro: rgb(36, 36, 36);
     --azul-modoescuro: #73A8FE;
+    --transition: all 0.3s ease;
 }
 
 a {
@@ -523,20 +524,6 @@ header {
     color: #333;
 }
 
-.item .status-verde {
-    padding: 18px;
-    background-color: rgb(215, 254, 233);
-    color: rgb(26, 172, 95) !important;
-    font-weight: bold;
-}
-
-.status-vermelho {
-    padding: 18px !important;
-    background-color: rgb(255, 217, 222);
-    color: rgb(233, 0, 57) !important;
-    font-weight: bold;
-}
-
 .erro-pagina {
     color: red;
 }
@@ -1036,13 +1023,13 @@ footer {
 }
 
 .book-badge.available {
-    background-color: rgb(82, 82, 255);
-    color: #d7fee9;
+    color: rgb(215, 254, 233);
+    background-color: rgb(26, 172, 95)
 }
 
 .book-badge.unavailable {
-    background-color: red;
-    color: #ffd9de;
+    color: rgb(255, 217, 222);
+    background-color: rgb(233, 0, 57)
 }
 
 .book-info {
