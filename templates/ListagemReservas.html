@@ -130,92 +130,77 @@
 
       carregarReservas();
 
-      function carregarReservas() {
-        const params = new URLSearchParams(window.location.search);
-        let pagina = params.get('pagina') || 1;
+      function carregaremprestimo() {
+        const token = localStorage.getItem("token");
 
-        // Esconde os controles inicialmente para evitar "piscar"
-        $("#pagina-anterior, #pagina-proxima, #paginaAtual").hide();
+        const params = new URLSearchParams(window.location.search);
+        var pagina = params.get('pagina');
+
+        if (pagina === null || pagina === undefined) {
+          pagina = 1
+        }
+
+        if (pagina == 1) {
+          document.getElementById('pagina-anterior').style.display = "none"
+        }
 
         $.ajax({
           method: "GET",
-          url: `${ipPython}/reservas?pagina=${pagina}`,
+          url: ipPython + "/emprestimos?pagina=" + pagina,
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': 'Bearer ' + token
           },
           success: function (data) {
-            const tabela = $("#tabela-reservas tbody");
+            console.log(data)
+            let emprestimos = data.emprestimos;
+            let tabela = $("#tabela-emprestimos tbody");
             tabela.empty();
 
-            const reservas = data.reservas || [];
-            const total = data.total_paginas || 1;
-            const paginaAtual = data.pagina_atual || 1;
-            const anterior = paginaAtual - 1;
-            const proxima = paginaAtual + 1;
+            var total = data.total_paginas
+            var paginaAtual = data.pagina_atual
+            var anterior = paginaAtual - 1
+            var proxima = paginaAtual + 1
 
-            if (reservas.length === 0) {
-              tabela.append(`
-          <tr>
-            <td colspan="5" class="text-center fw-bold py-4">
-              Nenhuma reserva encontrada no momento.
-            </td>
-          </tr>
-        `);
-              // Esconde botões e texto
-              $("#pagina-anterior, #pagina-proxima, #paginaAtual").hide();
-              return;
-            }
+            document.getElementById("pagina-anterior").href = "/templates/EmprestimosReservas.html?pagina=" + anterior
 
-            // Se tem dados, mostra botões e texto
-            $("#pagina-anterior, #pagina-proxima, #paginaAtual").show();
-
-            $("#pagina-anterior").attr("href", `/templates/ListagemReservas.html?pagina=${anterior}`);
-            $("#pagina-proxima").attr("href", `/templates/ListagemReservas.html?pagina=${proxima}`);
-            $("#paginaAtual").text(`Página ${paginaAtual}`);
-
-            if (paginaAtual <= 1) {
-              $("#pagina-anterior").hide();
-            } else {
-              $("#pagina-anterior").show();
-            }
+            document.getElementById("pagina-proxima").href = "/templates/EmprestimosReservas.html?pagina=" + proxima
 
             if (paginaAtual >= total) {
-              $("#pagina-proxima").hide();
-            } else {
-              $("#pagina-proxima").show();
+              document.getElementById('pagina-proxima').style.display = "none"
             }
 
-            reservas.forEach(reserva => {
-              tabela.append(`
-          <tr>
-            <td>${reserva.nome_usuario}</td>
-            <td>${reserva.data_reserva.replaceAll("-", "/")}</td>
-            <td>${reserva.titulo_livro}</td>
-            <td>${reserva.autor_livro}</td>
-            <td>
-              <div class="display-pai">
-                <button class="botao-reserva" type="submit" onclick="emprestarLivro(this)" data-id="${reserva.id_emprestimo}">
-                  Emprestar
-                </button>
-              </div>
-            </td>
+            if (paginaAtual > total || emprestimos.length === 0) {
+              document.getElementById('listaLivros').innerHTML = `
+              <p>Empréstimos não encontrados! Tente novamente mais tarde.</p>
+          `;
+              // Deletar a div "pagina-cao" quando não encontrar empréstimos
+              document.getElementById('pagina-cao').remove();
+            }
+
+            document.getElementById("paginaAtual").innerHTML = paginaAtual
+
+            emprestimos.forEach(emprestimo => {
+              let linha = `
+          <tr data-id="${emprestimo.id_emprestimo}">
+              <td>${emprestimo.nome_usuario}</td>
+              <td>${emprestimo.data_emprestimo.replaceAll("-", "/")}</td>
+              <td>${emprestimo.data_devolucao.replaceAll("-", "/")}</td>
+              <td>${emprestimo.titulo_livro}</td>
+              <td>${emprestimo.autor_livro}</td>
+              <td>
+                <button class="botao-devolucao" type="button" onclick="devolverLivro(this)">Devolver</button>
+              </td>
           </tr>
-        `);
+        `;
+              tabela.append(linha);
             });
           },
-          error: function (xhr) {
-            console.error("Erro ao carregar reservas:", xhr.responseText);
-            $("#tabela-reservas tbody").html(`
-        <tr>
-          <td colspan="5" class="text-center text-danger py-4">
-            Erro ao buscar reservas. Tente novamente mais tarde.
-          </td>
-        </tr>
-      `);
-            $("#pagina-anterior, #pagina-proxima, #paginaAtual").hide();
+          error: function name(params) {
+            console.error(params)
           }
         });
       }
+
 
     });
 
@@ -333,7 +318,7 @@
 
   </div>
 
-  <div class="paginacao">
+  <div id="pagina-cao" class="paginacao">
     <a href="" class="btn" id="pagina-anterior"> <i class="fa-solid fa-chevron-left"></i> </a>
     <h3 class="paginaAtual" id="paginaAtual">Página Atual</h3>
     <a href="" class="btn" id="pagina-proxima"> <i class="fa-solid fa-chevron-right"></i> </a>

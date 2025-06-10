@@ -88,7 +88,7 @@
         </table>
     </div>
 
-    <div class="paginacao">
+    <div id="pagina-cao" class="paginacao">
         <a href="" class="btn" id="pagina-anterior"> <i class="fa-solid fa-left-long"></i> </a>
         <h3 class="paginaAtual" id="paginaAtual">Página Atual</h3>
         <a href="" class="btn" id="pagina-proxima"> <i class="fa-solid fa-right-long"></i> </a>
@@ -224,10 +224,12 @@
                         // Adiciona uma linha com a mensagem quando não há empréstimos ativos
                         let mensagem = `
                             <tr>
-                                <td colspan="5" class="text-center">Não há nenhum empréstimo em andamento</td>
+                                <td colspan="5" class="text-center">Não há nenhum empréstimo em andamento!</td>
                             </tr>
                         `;
                         tabela.append(mensagem);
+
+                        document.getElementById("pagina-cao").style.display = "none";
                     } else {
                         emprestimosAtivos.forEach(reserva => {
                             let linha = `
