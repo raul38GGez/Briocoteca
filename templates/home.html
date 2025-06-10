@@ -267,24 +267,38 @@
                             retorno.livros.forEach((livro) => {
                                 if (livro.quantidade > 0) {
                                     html += `
-                                        <div class="item">
-                                            <a title="${livro.titulo}" href="reserva.html?id=${livro.id_livro}">
-                                                <img src="${ipPython}/static/uploads/Livros/${livro.id_livro}.jpeg" alt="">
-                                                <p>${livro.titulo}</p>
-                                                <p class="status-livro status-verde" data-id="${livro.id_livro}">Disponível</p>
-                                            </a>
+                                <div class="book-card">
+                                    <a href="reserva.html?id=${livro.id_livro}" title="${livro.titulo}">
+                                        <div class="book-image">
+                                            <img src="${typeof ipPython !== "undefined" ? ipPython : ""}/static/uploads/Livros/${livro.id_livro}.jpeg" alt="${livro.titulo}">
+                                            <div class="book-badge ${livro.quantidade > 0 ? 'available' : 'unavailable'}">
+                                                ${livro.quantidade > 0 ? 'Disponível' : 'Indisponível'}
+                                            </div>
                                         </div>
+                                        <div class="book-info">
+                                            <h4 class="book-title">${livro.titulo}</h4>
+                                            <p class="book-author">${livro.autor || ''}</p>
+                                        </div>
+                                    </a>
+                                </div>
                                     `;
                                 } else {
 
                                     html += `
-                                        <div class="item">
-                                            <a title="${livro.titulo}" href="reserva.html?id=${livro.id_livro}">
-                                                <img src="${ipPython}/static/uploads/Livros/${livro.id_livro}.jpeg" alt="">
-                                                <p>${livro.titulo}</p>
-                                                <p class="status-livro status-vermelho" data-id="${livro.id_livro}">Indisponível</p>
-                                            </a>
+                                                                        <div class="book-card">
+                                    <a href="reserva.html?id=${livro.id_livro}" title="${livro.titulo}">
+                                        <div class="book-image">
+                                            <img src="${typeof ipPython !== "undefined" ? ipPython : ""}/static/uploads/Livros/${livro.id_livro}.jpeg" alt="${livro.titulo}">
+                                            <div class="book-badge ${livro.quantidade > 0 ? 'available' : 'unavailable'}">
+                                                ${livro.quantidade > 0 ? 'Disponível' : 'Indisponível'}
+                                            </div>
                                         </div>
+                                        <div class="book-info">
+                                            <h4 class="book-title">${livro.titulo}</h4>
+                                            <p class="book-author">${livro.autor || ''}</p>
+                                        </div>
+                                    </a>
+                                </div>
                                     `;
                                 }
 
