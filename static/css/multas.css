@@ -647,6 +647,7 @@ h1 {
     background-color: #eef3ff;;
     border-radius: 6px;
     margin: 4px;
+    margin-left: 75px;
 }
 
 h2{
@@ -680,7 +681,6 @@ h2{
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    width: 540px;
     height: 45px;
     border: none;
     font-weight: bold;
