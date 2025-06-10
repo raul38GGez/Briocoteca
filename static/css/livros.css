@@ -400,6 +400,10 @@ input:checked + .slider:before {
     background-color: var(--azul);
 }
 
+.swal2-confirm:hover {
+    background-color: var(--azul-escuro);
+}
+
 .swal2-cancel {
     background-color: rgb(221, 51, 51);
 }
@@ -921,7 +925,10 @@ footer{
     align-items: center;
 }
 
-.table tbody tr td .botoes .btn-warning {
+.table tbody tr td .botoes .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--preto);
     color: var(--branco);
     transition: 0.3s;
@@ -937,19 +944,13 @@ footer{
     display: flex;
 }
 
-.table tbody tr td .botoes .btn-info:hover {
+.table tbody tr td .botoes .btn:hover {
     transition: 0.3s;
     background-color: var(--azul-escuro);
     color: var(--branco);
     border: none;
 }
 
-.table tbody tr td .botoes .btn-warning:hover {
-    transition: 0.3s;
-    background-color: var(--azul-escuro);
-    color: var(--branco);
-    border: none;
-}
 
 .table tbody + tbody {
     border-top: 2px solid #dee2e6; /* Borda superior entre os grupos de corpo */
