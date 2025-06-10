@@ -89,7 +89,7 @@ header {
     align-items: center;
     background-color: var(--branco);
     padding: 2px 20px;
-    border-radius: 25px;
+    border-radius: 5px;
     width: 600px;
 }
 
@@ -895,7 +895,7 @@ footer {
     text-align: center;
     margin-bottom: 30px;
     font-size: 2rem;
-    color: var(--primary-color);
+    color: var(--azul);
     position: relative;
 }
 
@@ -904,7 +904,7 @@ footer {
     display: block;
     width: 180px;
     height: 3px;
-    background-color: var(--secondary-color);
+    background-color: var(--azul-escuro);
     margin: 10px auto;
 }
 
@@ -963,9 +963,9 @@ footer {
 }
 
 .form-select {
-    padding: 10px 15px;
-    border: 1px solid var(--primary-color);
-    border-radius: 25px;
+    padding: 7px 15px;
+    border: 1px solid var(--azul);
+    border-radius: 5px;
     background-color: #eef3ff;
     cursor: pointer;
     min-width: 200px;
@@ -1063,7 +1063,7 @@ footer {
 
 .pagination-button {
     padding: 8px 15px;
-    background-color: var(--primary-color);
+    background-color: var(--azul);
     color: white;
     border-radius: 5px;
     transition: var(--transition);
@@ -1079,12 +1079,12 @@ footer {
 
 .current-page {
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--azul);
 }
 
 /* Seção de informações */
 .info-section {
-    background-color: var(--primary-color);
+    background-color: var(--azul);
     color: white;
     padding: 40px 0;
 }

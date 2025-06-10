@@ -550,9 +550,13 @@ h1 {
 .filho2 {
     margin-left: 50px;
     padding: 15px;
-    width: 25rem;
+    min-width: 40rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
+}
+
+.filho2 p {
+    margin-bottom: 15px;
 }
 
 .filho1 {
@@ -616,6 +620,7 @@ h1 {
 .form-label {
     color: var(--azul-escuro);
     font-weight: bold;
+    margin: 0px;
 }
 
 .nav-item {
@@ -630,10 +635,11 @@ h1 {
 }
 
 .mb-3 {
-    margin-top: -80px;
+    margin-top: -10px;
     display: flex;
     gap: 10px;
     justify-content: center;
+    flex-direction: column;
 }
 
 .modal-footer {
@@ -641,8 +647,9 @@ h1 {
 }
 
 .btn-salvar {
+    font-weight: bold;
     width: 29rem;
-    padding: 5px;
+    padding: 7px;
     border-radius: 5px;
     border: none;
     background-color: var(--azul);
@@ -652,7 +659,7 @@ h1 {
 
 .btn-salvar:hover {
     background-color: var(--azul-escuro);
-    transform: translateY(-2px);
+    transform: scale(1.05);
     transition: 0.5s;
 }
 
