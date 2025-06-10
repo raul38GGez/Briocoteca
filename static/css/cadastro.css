@@ -280,7 +280,11 @@ input::placeholder {
     width: 55px;
     height: auto;
 }
-
+.swal2-confirm{
+    background-color: var(--azul);
+    color: white;
+    border: 2px solid var(--azul);
+}
 @media (max-width: 800px) {
     .livro-1 {
         display: none;
