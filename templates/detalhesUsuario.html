@@ -521,8 +521,9 @@
                         tbody.append(row);
                     });
                 },
-                error: function (err) {
-                    Swal.fire('O usuário não possui nenhuma multa.', 'Nenhuma multa encontrada!', 'error');
+                error: function () {
+                    const tbody = $('#tabela-multas tbody').empty();
+                    tbody.append('<tr><td colspan="3" class="text-center">Este usuário não possui multas.</td></tr>');
                 }
             });
         }
