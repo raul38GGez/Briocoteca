@@ -209,7 +209,7 @@
             $("#tabela-reservas tbody").html(`
               <tr>
                 <td colspan="5" class="text-center">
-                  Erro ao buscar reservas. Tente novamente mais tarde.
+                  Nenhum usuário está com uma reserva em andamento!
                 </td>
               </tr>
             `);
@@ -295,40 +295,53 @@
     // Chama a função assim que o DOM carregar
     document.addEventListener("DOMContentLoaded", atualizarLinksRelatorios);
 
-    const logoImage = document.getElementById("logoImage");
-    logoImage.src = `${ipPython}/static/uploads/logo/logo.png`;
-
-    const logoImage2 = document.getElementById("logoImage2");
-    logoImage2.src = `${ipPython}/static/uploads/logo/logo.png`;
-
     const logoExts = ['png', 'jpg', 'jpeg', 'webp'];
+    
     function atualizarLogoSite() {
-      let i = 0;
-      function tentarProxima() {
-        if (i >= logoExts.length) {
-          let logoImage = document.getElementById("logoImage");
-          let logoImage2 = document.getElementById("logoImage2");
-          if (logoImage) logoImage.src = '../static/img/head-removebg-preview.png';
-          if (logoImage2) logoImage2.src = '../static/img/head-removebg-preview.png';
-          return;
-        }
-        let url = `${ipPython}/static/uploads/logo/logo.${logoExts[i]}?${Date.now()}`;
-        fetch(url).then(resp => {
-          if (resp.ok) {
-            let logoImage = document.getElementById("logoImage");
-            let logoImage2 = document.getElementById("logoImage2");
-            if (logoImage) logoImage.src = url;
-            if (logoImage2) logoImage2.src = url;
-          } else {
-            i++;
-            tentarProxima();
-          }
-        });
-      }
-      tentarProxima();
-    }
-    document.addEventListener('DOMContentLoaded', atualizarLogoSite);
+    const extensoes = ["png", "jpg", "jpeg", "webp"];
+    let indice = 0;
+    const logoImage2 = document.getElementById("logoImage2");
 
+    function tentarProxima() {
+      if (indice >= extensoes.length) {
+        // Se nenhuma imagem foi carregada, usa o padrão
+        if (logoImage2) {
+          logoImage2.src = "/static/img/head-removebg-preview.png";
+        }
+        return;
+      }
+
+      const ext = extensoes[indice];
+      const caminho = `${ipPython}/static/uploads/logo/logo.${ext}`;
+      indice++;
+
+      if (!logoImage2) return;
+
+      logoImage2.onerror = function () {
+        tentarProxima();
+      };
+      logoImage2.onload = function () {
+        // Quando carregar com sucesso, remove o evento de erro pra não causar bugs
+        logoImage2.onerror = null;
+      };
+      logoImage2.src = caminho;
+    }
+
+    tentarProxima();
+  }
+
+  // Quando o DOM estiver pronto, carregar os logos
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoHeader = document.getElementById("logoImage");
+    const logoFooter = document.getElementById("logoImage2");
+
+    if (logoHeader) {
+      logoHeader.src = `${ipPython}/static/uploads/logo/logo.png`;
+    }
+
+    // Rodar a função de fallback para o footer
+    atualizarLogoSite();
+  });
 
   </script>
 

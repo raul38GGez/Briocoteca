@@ -93,7 +93,6 @@
                     <th>Nome do Usuário</th>
                     <th>Título do Livro</th>
                     <th>Autor do Livro</th>
-                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -250,9 +249,6 @@
                                     <td>${reserva.nome_usuario}</td>
                                     <td class="nome-coisado">${reserva.titulo_livro}</td>
                                     <td>${reserva.autor_livro}</td>
-                                    <td>
-                                        <button class="cancelar-btn" data-id="${reserva.id_emprestimo}">Cancelar</button>
-                                    </td>
                                 </tr>
                             `;
                             tabela.append(linha);

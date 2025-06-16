@@ -639,11 +639,14 @@ h1 {
     display: flex;
     gap: 10px;
     justify-content: center;
-    flex-direction: column;
 }
 
 .modal-footer {
     justify-content: center;
+}
+
+.modal-body div {
+    flex-direction: column;
 }
 
 .btn-salvar {

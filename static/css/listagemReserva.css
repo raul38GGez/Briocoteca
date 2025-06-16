@@ -801,6 +801,8 @@ button.botao-multas {
 
 .table-container {
     overflow: auto;
+    padding-top: 50px;
+    padding-bottom: 100px;
 }
 
 .titulo {
