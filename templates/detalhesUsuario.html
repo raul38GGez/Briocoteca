@@ -13,17 +13,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../static/css/detalhesUsuario.css">
     <link rel="stylesheet" href="../static/css/home.css">
-    <link rel="icon" type="image/x-icon" href="../static/img/head-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="../static/img/logo.png">
 </head>
 
 <body>
     <header>
+        <!-- Logo -->
         <div id="logo-site" class="header-left">
             <a id="logoHeader" href="home.html">
                 <img id="logoImage" alt="Logo">
             </a>
         </div>
 
+        <!-- Barra de Pesquisa -->
         <form id="formBuscaLivro">
             <div class="search-container">
                 <i class="fas fa-search"></i>
@@ -42,6 +44,7 @@
         </div>
 
         <div class="coisa">
+            <!-- Ícone de Menu com Dropdown -->
             <div class="header-end">
                 <div class="menu-container">
                     <div class="menu-icon" id="menuButton">
@@ -49,10 +52,14 @@
                         <div class="menulinha"></div>
                         <div class="menulinha"></div>
                     </div>
-                    <ul class="dropdown-menu" id="dropdownMenu"></ul>
+
+                    <ul class="dropdown-menu" id="dropdownMenu">
+
+                    </ul>
+
                 </div>
             </div>
-        </div>
+
     </header>
 
     <main>
@@ -105,17 +112,13 @@
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="formEditarUsuario" enctype="multipart/form-data">
+                    <form id="formEditarUsuario">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editarUsuarioModalLabel">Editar Usuário</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Fechar"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="imagemUsuarioInput" class="form-label">Foto do Perfil</label>
-                                <input type="file" class="form-control" id="imagemUsuarioInput" accept="image/*">
-                            </div>
                             <div class="mb-3">
                                 <label for="nomeUsuario" class="form-label">Nome</label>
                                 <input type="text" class="form-control" id="nomeUsuario" required>
@@ -326,18 +329,15 @@
             }
             $('#idUsuario').val(idUsuario);
 
-            // Carrega os dados do usuário
             $.ajax({
                 url: `${ipPython}/usuarioo/${idUsuario}`,
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token }
             })
                 .done(function (usu) {
-                    // Atualiza a imagem com timestamp para evitar cache
                     $('#imagemUsuario')
-                        .attr('src', `${ipPython}/static/uploads/Usuarios/${idUsuario}.jpeg?${Date.now()}`)
+                        .attr('src', `${ipPython}/static/uploads/Usuarios/${idUsuario}.jpeg`)
                         .on('error', () => $('#imagemUsuario').attr('src', '../static/img/user.png'));
-
                     $('#nome').text(usu.nome);
                     $('#email').text(usu.email);
                     $('#telefone').text(usu.telefone);
@@ -345,7 +345,7 @@
                     $('#cargo').text(usu.cargo);
                     $('#status').text(usu.status).attr('data-status', usu.status);
                 })
-                .fail(() => Swal.fire('Erro', 'Não foi possível obter os dados do usuário', 'error'));
+                .fail(() => Swal.fire('Sem multas', 'Não há nenhuma multa para este usuário', 'error'));
 
             // Abre modal de edição
             $('#btn_editar').on('click', function () {
@@ -356,10 +356,6 @@
                 $('#dataNascimentoUsuario').val(`${parts[2]}-${parts[1]}-${parts[0]}`);
                 $('#cargoUsuario').val($('#cargo').text());
                 $('#statusUsuario').val($('#status').text());
-
-                // Limpa o input de imagem
-                $('#imagemUsuarioInput').val('');
-
                 new bootstrap.Modal(document.getElementById('editarUsuarioModal')).show();
             });
 
@@ -367,54 +363,30 @@
             $('#formEditarUsuario').submit(function (e) {
                 e.preventDefault();
 
-                const formData = new FormData();
-                const fileInput = $('#imagemUsuarioInput')[0].files[0];
-
-                // Adiciona a imagem se foi selecionada
-                if (fileInput) {
-                    formData.append('imagem', fileInput);
-                }
-
-                // Adiciona os outros campos
-                formData.append('nome', $('#nomeUsuario').val().trim());
-                formData.append('email', $('#emailUsuario').val().trim());
-                formData.append('telefone', $('#telefoneUsuario').val().trim());
-                formData.append('data_nascimento', $('#dataNascimentoUsuario').val());
-                formData.append('cargo', $('#cargoUsuario').val().trim());
-                formData.append('status', $('#statusUsuario').val());
+                const dados = {
+                    nome: $('#nomeUsuario').val().trim(),
+                    email: $('#emailUsuario').val().trim(),
+                    telefone: $('#telefoneUsuario').val().trim(),
+                    data_nascimento: $('#dataNascimentoUsuario').val(),
+                    cargo: $('#cargoUsuario').val().trim(),
+                    status: $('#statusUsuario').val()
+                };
 
                 $.ajax({
                     method: 'PUT',
                     url: `${ipPython}/usuariosadm/${idUsuario}`,
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    contentType: false, // Importante para FormData
-                    processData: false, // Importante para FormData
-                    data: formData,
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    contentType: 'application/json',
+                    data: JSON.stringify(dados),
                     success: function () {
                         Swal.fire('Sucesso!', 'Usuário atualizado com sucesso!', 'success')
                             .then(() => {
-                                // Atualiza os campos na página
-                                $('#nome').text($('#nomeUsuario').val());
-                                $('#email').text($('#emailUsuario').val());
-                                $('#telefone').text($('#telefoneUsuario').val());
-                                $('#data_nascimento').text(new Date($('#dataNascimentoUsuario').val()).toLocaleDateString('pt-BR'));
-                                $('#cargo').text($('#cargoUsuario').val());
-                                $('#status').text($('#statusUsuario').val()).attr('data-status', $('#statusUsuario').val());
-
-                                // Atualiza a imagem se foi alterada
-                                if (fileInput) {
-                                    // Mostra prévia imediata
-                                    $('#imagemUsuario').attr('src', URL.createObjectURL(fileInput));
-
-                                    // Força recarregamento da imagem do servidor após 1s
-                                    setTimeout(() => {
-                                        $('#imagemUsuario').attr('src', `${ipPython}/static/uploads/Usuarios/${idUsuario}.jpeg?${Date.now()}`);
-                                    }, 1000);
-                                }
-
-                                // Fecha o modal
+                                $('#nome').text(dados.nome);
+                                $('#email').text(dados.email);
+                                $('#telefone').text(dados.telefone);
+                                $('#data_nascimento').text(new Date(dados.data_nascimento).toLocaleDateString('pt-BR'));
+                                $('#cargo').text(dados.cargo);
+                                $('#status').text(dados.status).attr('data-status', dados.status);
                                 bootstrap.Modal.getInstance(document.getElementById('editarUsuarioModal')).hide();
                             });
                     },
@@ -430,18 +402,6 @@
                 v = v.replace(/(\d{2})(\d)/, '($1) $2');
                 v = v.replace(/(\d)(\d{4})$/, '$1-$2');
                 event.target.value = v;
-            });
-
-            // Mostra prévia da imagem selecionada
-            $('#imagemUsuarioInput').on('change', function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#imagemUsuario').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(file);
-                }
             });
         });
 
@@ -505,6 +465,34 @@
             carregarReservas(atual + 1);
         });
 
+        // Logo dinâmico igual Home
+        const logoExts = ['png', 'jpg', 'jpeg', 'webp'];
+        function atualizarLogoSite() {
+            let i = 0;
+            function tentarProxima() {
+                if (i >= logoExts.length) {
+                    let logoImage = document.getElementById("logoImage");
+                    let logoImage2 = document.getElementById("logoImage2");
+                    if (logoImage) logoImage.src = '../static/img/logo.png';
+                    if (logoImage2) logoImage2.src = '../static/img/logo.png';
+                    return;
+                }
+                let url = `${ipPython}/static/uploads/logo/logo.${logoExts[i]}?${Date.now()}`;
+                fetch(url).then(resp => {
+                    if (resp.ok) {
+                        let logoImage = document.getElementById("logoImage");
+                        let logoImage2 = document.getElementById("logoImage2");
+                        if (logoImage) logoImage.src = url;
+                        if (logoImage2) logoImage2.src = url;
+                    } else {
+                        i++;
+                        tentarProxima();
+                    }
+                });
+            }
+            tentarProxima();
+        }
+
         // Carregar multas do usuário
         function carregarMultas() {
             const token = localStorage.getItem('token');
@@ -533,8 +521,9 @@
                         tbody.append(row);
                     });
                 },
-                error: function (err) {
-                    Swal.fire('Erro', 'Não foi possível carregar o histórico de multas.', 'error');
+                error: function () {
+                    const tbody = $('#tabela-multas tbody').empty();
+                    tbody.append('<tr><td colspan="3" class="text-center">Este usuário não possui multas.</td></tr>');
                 }
             });
         }
@@ -544,34 +533,6 @@
         $('#pills-multas-tab').on('shown.bs.tab', function () {
             carregarMultas();
         });
-
-        // Logo dinâmico igual Home
-        const logoExts = ['png', 'jpg', 'jpeg', 'webp'];
-        function atualizarLogoSite() {
-            let i = 0;
-            function tentarProxima() {
-                if (i >= logoExts.length) {
-                    let logoImage = document.getElementById("logoImage");
-                    let logoImage2 = document.getElementById("logoImage2");
-                    if (logoImage) logoImage.src = '../static/img/head-removebg-preview.png';
-                    if (logoImage2) logoImage2.src = '../static/img/head-removebg-preview.png';
-                    return;
-                }
-                let url = `${ipPython}/static/uploads/logo/logo.${logoExts[i]}?${Date.now()}`;
-                fetch(url).then(resp => {
-                    if (resp.ok) {
-                        let logoImage = document.getElementById("logoImage");
-                        let logoImage2 = document.getElementById("logoImage2");
-                        if (logoImage) logoImage.src = url;
-                        if (logoImage2) logoImage2.src = url;
-                    } else {
-                        i++;
-                        tentarProxima();
-                    }
-                });
-            }
-            tentarProxima();
-        }
         document.addEventListener('DOMContentLoaded', atualizarLogoSite);
     </script>
 </body>
