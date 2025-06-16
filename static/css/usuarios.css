@@ -1301,6 +1301,10 @@ footer {
     .menu-icon {
         width: 25px;
     }
+
+    #modal-adicao form {
+        width: 90%;
+    }
 }
 
 @media (max-width: 480px) {
