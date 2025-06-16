@@ -316,6 +316,10 @@ header {
     padding-left: 1px;
 }
 
+.fa-whatsapp {
+    font-size: 35px;
+}
+
 
 /* SUB-MODAIS DOS RELATÓRIOS */
 /* Estilo do submenu */
@@ -785,7 +789,7 @@ footer {
     }
 
     .search-container {
-        width: 200px;
+        width: 150px;
     }
 
     .menu-icon {
@@ -810,9 +814,16 @@ footer {
         flex-direction: column;
     }
 
+    .separacao1 {
+        flex-direction: column;
+        align-items: center;
+    }
+
     .separacao1 p {
         margin-top: 10px;
         font-size: 15px;
+        margin-bottom: 0px;
+        margin-left: 0px;
     }
 
     .redes i {
@@ -822,6 +833,10 @@ footer {
 
     .imagem {
         display: none;
+    }
+
+    .wrapper {
+        height: 60px;
     }
 
     .catalogo p {
@@ -834,6 +849,15 @@ footer {
     .wrapper .icon svg {
         width: 14px;
         height: 14px;
+    }
+
+    .listalivros {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .fa-whatsapp {
+        font-size: 17px;
     }
 }
 
@@ -869,7 +893,9 @@ footer {
     }
 
     .nomeUsuario {
-        font-size: 15px
+        font-size: 15px;
+        display: flex;
+        margin-left: 0px;
     }
 
     .span {
