@@ -345,7 +345,7 @@
                     $('#cargo').text(usu.cargo);
                     $('#status').text(usu.status).attr('data-status', usu.status);
                 })
-                .fail(() => Swal.fire('Erro', 'Não foi possível obter os dados do usuário', 'error'));
+                .fail(() => Swal.fire('Sem multas', 'Não há nenhuma multa para este usuário', 'error'));
 
             // Abre modal de edição
             $('#btn_editar').on('click', function () {
