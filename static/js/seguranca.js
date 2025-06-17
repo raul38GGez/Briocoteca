@@ -216,7 +216,7 @@ if (cargo === 'ADM') {
 
         <li class="menu-item">
             <div>
-                <i class="fa-solid fa-clock"></i><a href="historicoAtividade.html">Histórico de Reservas</a>
+                <i class="fa-solid fa-clock"></i><a href="historicoAtividade.html">Histórico</a>
             </div>
         </li>
 
