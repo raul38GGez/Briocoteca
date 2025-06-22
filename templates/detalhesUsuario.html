@@ -335,26 +335,13 @@
                 headers: { 'Authorization': 'Bearer ' + token }
             })
                 .done(function (usu) {
-                    console.log('Data recebida do backend:', usu.data_nascimento);
-
-                    let dataBr = 'Data inválida';
-                    if (usu.data_nascimento) {
-                        const dataOriginal = new Date(usu.data_nascimento);
-                        if (!isNaN(dataOriginal)) {
-                            const ano = dataOriginal.getUTCFullYear();
-                            const mes = String(dataOriginal.getUTCMonth() + 1).padStart(2, '0');
-                            const dia = String(dataOriginal.getUTCDate()).padStart(2, '0');
-                            dataBr = `${dia}/${mes}/${ano}`;
-                        }
-                    }
-                    $('#data_nascimento').text(dataBr);
-
                     $('#imagemUsuario')
                         .attr('src', `${ipPython}/static/uploads/Usuarios/${idUsuario}.jpeg`)
                         .on('error', () => $('#imagemUsuario').attr('src', '../static/img/user.png'));
                     $('#nome').text(usu.nome);
                     $('#email').text(usu.email);
                     $('#telefone').text(usu.telefone);
+                    $('#data_nascimento').text(new Date(usu.data_nascimento).toLocaleDateString('pt-BR'));
                     $('#cargo').text(usu.cargo);
                     $('#status').text(usu.status).attr('data-status', usu.status);
                 })
