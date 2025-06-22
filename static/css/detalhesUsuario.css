@@ -1558,7 +1558,7 @@ p {
 }
 
 .botao-editar {
-    background-color: #3380ca;
+    background-color: #6c757d;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -1571,7 +1571,7 @@ p {
 }
 
 .botao-editar:hover {
-    background-color: #3380ca;
+    background-color: #5a6268;
 }
 
 .user-header {
@@ -1629,6 +1629,37 @@ p {
     padding-left: 26px;
 }
 
+/* Estilos para o input de imagem */
+.form-control[type="file"] {
+    padding: 0.375rem 0.75rem;
+}
+
+#imagemUsuarioInput {
+    cursor: pointer;
+}
+
+#imagemUsuarioInput::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+#imagemUsuarioInput::before {
+    content: 'Selecionar imagem';
+    display: inline-block;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#imagemUsuarioInput:hover::before {
+    background: #5a6268;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .pai1 {
@@ -1647,5 +1678,4 @@ p {
     }
 }
 
-/* Estilos existentes que devem ser mantidos */
-/* ... (seus estilos existentes que não foram modificados) ... */
+/* Mantenha os outros estilos existentes que não foram modificados */
