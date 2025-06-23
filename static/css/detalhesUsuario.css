@@ -700,8 +700,8 @@ h1 {
 }
 
 .botao-editar {
-    --color: #3380ca;
-    background-color: white;
+    --color: #000000;
+    background-color: #3380ca;
     font-family: inherit;
     display: flex;
     align-items: center;
@@ -709,7 +709,7 @@ h1 {
     width: 14em;
     height: 2.5em;
     line-height: 2.5em;
-    margin: 20px;
+    margin: 3px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
@@ -720,6 +720,14 @@ h1 {
     font-weight: bold;
     border-radius: 6px;
     color: var(--azul);
+}
+
+#btn_editar {
+    margin-top: 10px;
+}
+
+#btn_editar_imagem {
+    background-color: #43aaff;
 }
 
 .botao-editar:before {
@@ -733,7 +741,7 @@ h1 {
 }
 
 .botao-editar:hover {
-    color: white;
+    background-color: #6c757d;
 }
 
 .botao-editar:before {
@@ -748,7 +756,7 @@ h1 {
 }
 
 .botao-editar:active:before {
-    background: #0060BB;
+    background: #6c757d;
     transition: background 0s;
 }
 

@@ -72,6 +72,11 @@
                         <button id="btn_editar" class="botao-editar" type="button">
                             <i class="fas fa-edit"></i> Editar Perfil
                         </button>
+
+                        <button id="btn_editar_imagem" class="botao-editar" type="button">
+                            <i class="fas fa-image"></i> Editar Imagem
+                        </button>
+                        <input type="file" id="imagemUsuarioInput" accept="image/*" style="display: none;">
                     </div>
 
                     <div class="filho2">
@@ -409,6 +414,37 @@
                 });
             });
 
+            // Abre o seletor de arquivos ao clicar no botão "Editar Imagem"
+            $('#btn_editar_imagem').on('click', function () {
+                $('#imagemUsuarioInput').click();
+            });
+            // Envio do formulário de edição de imagem
+            $('#imagemUsuarioInput').on('change', function () {
+                const formData = new FormData();
+                const idUsuario = $('#idUsuario').val();
+                const imagem = this.files[0];
+                if (imagem) {
+                    formData.append('imagem', imagem);
+                    $.ajax({
+                        method: 'POST',
+                        url: `${ipPython}/editar_imagem_usuarios/${idUsuario}`,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+                        success: function () {
+                            Swal.fire('Sucesso!', 'Imagem atualizada com sucesso!', 'success')
+                                .then(() => {
+                                    $('#imagemUsuario').attr('src', `${ipPython}/static/uploads/Usuarios/${idUsuario}.jpeg?${Date.now()}`);
+                                });
+                        },
+                        error: function (retorno) {
+                            Swal.fire('Erro!', JSON.parse(retorno.responseText).error || 'Falha ao editar imagem.', 'error');
+                        }
+                    });
+                }
+            });
+
             // Máscara de telefone
             $('#telefoneUsuario').on('keyup', function (event) {
                 let v = event.target.value.replace(/\D/g, '');
@@ -534,8 +570,9 @@
                         tbody.append(row);
                     });
                 },
-                error: function (err) {
-                    Swal.fire('Erro', 'Não foi possível carregar o histórico de multas.', 'error');
+                error: function () {
+                    const tbody = $('#tabela-multas tbody').empty();
+                    tbody.append('<tr><td colspan="3" class="text-center">Este usuário não possui multas.</td></tr>');
                 }
             });
         }
